@@ -10,4 +10,6 @@ public interface WordService {
 	
 	Word createWord(Word word);
 	
+	Word getWordsByWordString(String word);
+	
 }

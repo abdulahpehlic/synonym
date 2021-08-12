@@ -27,4 +27,9 @@ public class WordServiceImpl implements WordService {
 	public List<Word> getWordsBySynonymGroup(Long synonymGroup) {
 		return wordRepository.findBySynonymGroup(synonymGroup);
 	}
+	
+	@Override
+	public Word getWordsByWordString(String word) {
+		return wordRepository.findByWord(word);
+	}
 }

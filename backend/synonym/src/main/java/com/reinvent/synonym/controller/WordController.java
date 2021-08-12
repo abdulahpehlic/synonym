@@ -32,9 +32,15 @@ public class WordController {
 		this.wordService = wordService;
 	}
 	
-	@GetMapping("/{synonymGroup}")
-	public ResponseEntity<List<WordDTO>> getWordBySynonymGroup(@PathVariable(name = "synonymGroup") Long synonymGroup) {
+	@GetMapping("/{word}")
+	public ResponseEntity<List<WordDTO>> getWordBySynonymGroup(@PathVariable(name = "word") String wordString) {
+		Word requestWord = wordService.getWordsByWordString(wordString);
+		
+		Long synonymGroup = requestWord.getSynonymGroup();
+		
 		List<Word> synonyms = wordService.getWordsBySynonymGroup(synonymGroup);
+		
+		synonyms.removeIf(obj -> obj.getId() == requestWord.getId());
 		
 		//Convert entity to DTO
 		List<WordDTO> wordResponse = synonyms.stream()

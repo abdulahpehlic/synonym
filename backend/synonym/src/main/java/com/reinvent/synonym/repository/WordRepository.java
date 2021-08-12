@@ -10,4 +10,6 @@ public interface WordRepository extends JpaRepository<Word, Long>{
 	
 	List<Word> findBySynonymGroup(Long synonymGroup);
 	
+	Word findByWord(String word);
+	
 }
