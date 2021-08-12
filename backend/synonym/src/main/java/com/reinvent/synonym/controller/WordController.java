@@ -51,16 +51,20 @@ public class WordController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<WordDTO> createWord(@RequestBody WordDTO wordDto) {
+	public ResponseEntity<List<WordDTO>> createWord(@RequestBody List<WordDTO> wordDtoList) {
 		//Convert DTO to entity
-		Word wordRequest = modelMapper.map(wordDto, Word.class);
+		List<Word> wordRequest = wordDtoList.stream()
+				.map(word -> modelMapper.map(word, Word.class))
+				.collect(Collectors.toList());
 		
-		Word word = wordService.createWord(wordRequest);
+		wordRequest.forEach(word -> wordService.createWord(word));
 		
 		//Convert entity to DTO
-		WordDTO wordResponse = modelMapper.map(word, WordDTO.class);
+		List<WordDTO> wordResponse = wordRequest.stream()
+				.map(word -> modelMapper.map(word, WordDTO.class))
+				.collect(Collectors.toList());
 		
-		return new ResponseEntity<WordDTO>(wordResponse, HttpStatus.CREATED);
+		return new ResponseEntity<List<WordDTO>>(wordResponse, HttpStatus.CREATED);
 		
 	}
 }
