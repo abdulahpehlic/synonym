@@ -32,9 +32,9 @@ public class WordController {
 		this.wordService = wordService;
 	}
 	
-	@GetMapping("/{word}")
-	public ResponseEntity<List<WordDTO>> getWordBySynonymGroup(@PathVariable(name = "word") String wordString) {
-		Word requestWord = wordService.getWordsByWordString(wordString);
+	@GetMapping
+	public ResponseEntity<List<WordDTO>> getWordBySynonymGroup(@RequestBody WordDTO wordString) {
+		Word requestWord = wordService.getWordsByWordString(wordString.getWord());
 		
 		Long synonymGroup = requestWord.getSynonymGroup();
 		
@@ -50,12 +50,15 @@ public class WordController {
 		return ResponseEntity.ok().body(wordResponse);
 	}
 	
-	@PostMapping
+	@PostMapping("/add")
 	public ResponseEntity<List<WordDTO>> createWord(@RequestBody List<WordDTO> wordDtoList) {
 		//Convert DTO to entity
 		List<Word> wordRequest = wordDtoList.stream()
 				.map(word -> modelMapper.map(word, Word.class))
 				.collect(Collectors.toList());
+		Long latestSynonymGroup = wordService.getLatestSynonymGroup();
+		
+		wordRequest.forEach(word -> word.setSynonymGroup(latestSynonymGroup + 1));
 		
 		wordRequest.forEach(word -> wordService.createWord(word));
 		

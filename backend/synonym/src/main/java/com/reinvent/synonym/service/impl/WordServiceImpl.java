@@ -32,4 +32,9 @@ public class WordServiceImpl implements WordService {
 	public Word getWordsByWordString(String word) {
 		return wordRepository.findByWord(word);
 	}
+	
+	@Override
+	public Long getLatestSynonymGroup() {
+		return wordRepository.findLatestSynonymGroup();
+	}
 }

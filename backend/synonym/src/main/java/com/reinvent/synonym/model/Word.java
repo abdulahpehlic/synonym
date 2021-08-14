@@ -25,6 +25,9 @@ public class Word {
 	@Column(name = "WORD")
 	private String word;
 	
+	@Column(name = "DESCRIPTION")
+	private String description;
+	
 	@Column(name = "SYNONYM_GROUP")
 	private Long synonymGroup;
 	

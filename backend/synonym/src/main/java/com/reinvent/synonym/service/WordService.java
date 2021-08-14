@@ -12,4 +12,6 @@ public interface WordService {
 	
 	Word getWordsByWordString(String word);
 	
+	Long getLatestSynonymGroup();
+	
 }
