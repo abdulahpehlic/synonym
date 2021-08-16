@@ -1,0 +1,20 @@
+.buttonToggleGroup {
+    border: none;
+    margin: auto;
+    display: block;
+}
+
+.matCardContainer {
+    margin: auto;
+    background-color: rgb(38, 91, 160);
+    width: 50%;
+    top: 10%;
+}
+
+.toolbar {
+    background: linear-gradient(rgb(8, 83, 223), rgb(106, 106, 184));
+    color: white;
+    display: block;
+    text-align: center;
+    display: inline-block;
+}
