@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { from, Observable } from 'rxjs';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WordService } from './word/service/word-service';
 import { WordResponse } from './word/model/word-response';
-import { groupBy, mergeMap, toArray } from 'rxjs/operators';
-import { group } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +14,9 @@ export class AppComponent {
   options: string[] = ['One', 'Two', 'Three'];
   filteredValues: any;
   words: WordResponse[];
+  wordsGrouped: WordResponse[][];
   wordSearchForm: FormGroup;
+  selectedWord: string;
 
   constructor (private wordService: WordService) {}
 
@@ -37,7 +35,9 @@ export class AppComponent {
     this.wordService.fetchWords(wordSearchFormValue.wordString).subscribe(
       (data: any) => {
         this.words = data;
-        this.words = this.groupSynonyms(this.words)
+        this.wordsGrouped = this.groupSynonyms(this.words);
+        this.selectedWord = wordSearchFormValue.wordString;
+        console.log(JSON.stringify(this.wordsGrouped))
       },
       (err) => {
         console.error(JSON.stringify(err));
@@ -48,13 +48,18 @@ export class AppComponent {
     );
   }
 
+  isWordEmpty(word: any) {
+    return (word == null) || (word.length == 0)
+  }
+
   groupSynonyms(words: WordResponse[]) {
-    return words.reduce((r, a) => {
+    return words.reduce(function (r, a) {
       r[a.synonymGroup] = r[a.synonymGroup] || [];
       r[a.synonymGroup].push(a);
       return r;
-  }, Object.create(null));
+  }, [Object.create([])]);
   }
+  
   noWhitespaceValidator(control: FormControl) {
     const isWhitespace = (control.value || '').trim().length === 0;
     const isValid = !isWhitespace;

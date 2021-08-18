@@ -6,15 +6,13 @@
 
 .matCardContainer {
     margin: auto;
-    background-color: rgb(38, 91, 160);
+    background-image: url("https://i.pinimg.com/originals/d0/67/5e/d0675e75e10ac79ff8af6245eb4d804b.jpg");
     width: 50%;
     top: 10%;
+    display: block;
 }
 
 .toolbar {
-    background: linear-gradient(rgb(8, 83, 223), rgb(106, 106, 184));
-    color: white;
-    display: block;
-    text-align: center;
-    display: inline-block;
+    background-image: url("https://i.pinimg.com/originals/d0/67/5e/d0675e75e10ac79ff8af6245eb4d804b.jpg");
+    
 }
