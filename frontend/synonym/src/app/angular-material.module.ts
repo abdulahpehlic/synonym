@@ -7,6 +7,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 
 const modules: any[] = [
     MatButtonModule,
@@ -14,7 +17,10 @@ const modules: any[] = [
     MatButtonToggleModule,
     MatToolbarModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatIconModule
 ];
 
 @NgModule({

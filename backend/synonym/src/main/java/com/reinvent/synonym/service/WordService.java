@@ -10,8 +10,10 @@ public interface WordService {
 	
 	Word createWord(Word word);
 	
-	Word getWordsByWordString(String word);
+	List<Word> getWordsByWordString(String word);
 	
 	Long getLatestSynonymGroup();
+	
+	Word checkForExistingSynonyms(List<String> listOfSynonyms);
 	
 }

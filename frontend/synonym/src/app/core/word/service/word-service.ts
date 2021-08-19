@@ -4,19 +4,34 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError} from 'rxjs';
 import { WordResponse } from '../model/word-response';
+import { WordRequest } from '../model/word-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WordService {
-  private url = 'http://localhost:8080/api/words';
+  private url = 'http://localhost:8080/api/words/';
+
+  private thesaurusUri = 'https://tuna.thesaurus.com/pageData/';
 
   constructor(private http: HttpClient) { }
 
   fetchWords(word: String) {
-    return this.http.get<WordResponse[]>(this.url + '/' + word).pipe(
+    return this.http.get<WordResponse[]>(this.url + word).pipe(
       catchError(this.handleError)
     )
+  }
+
+  fetchThesaurusResponse(word: String) {
+    return this.http.get<WordRequest>(this.thesaurusUri + word).pipe(
+      catchError(this.handleError)
+    );
+  }
+  addWords(request: WordRequest[], mainWord: WordRequest) {
+
+    return this.http.post<WordRequest>(this.url + 'add', request).pipe(
+      catchError(this.handleError)
+    );
   }
 
   private handleError(error: HttpErrorResponse) {
