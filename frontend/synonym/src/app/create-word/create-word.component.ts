@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { WordRequest } from '../core/word/model/word-request';
 import { WordResponse } from '../core/word/model/word-response';
 import { WordService } from '../core/word/service/word-service';
@@ -30,7 +31,7 @@ export class CreateWordComponent implements OnInit {
   existingDefinition: string;
   wordAddResponseData: any;
 
-  constructor(private wordService: WordService, private dialog: MatDialog) { }
+  constructor(private wordService: WordService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.initForms();
@@ -79,11 +80,11 @@ export class CreateWordComponent implements OnInit {
 
   addSynonymUsingInput(synonym: string) {
     if (this.selectedSynonyms.indexOf(synonym) !== -1) {
-      alert("Synonym already picked!")
+      this.openSnackBar('Synonym already picked!', 'Close');
       return;
     }
     if (this.existingSynonyms.indexOf(synonym) !== -1) {
-      alert("Synonym already exists in the database!")
+      this.openSnackBar('Synonym already exists in the database!', 'Close');
       return;
     }
     if (this.possibleSynonyms.indexOf(synonym) !== -1) {
@@ -94,7 +95,7 @@ export class CreateWordComponent implements OnInit {
       this.selectedSynonyms.push(synonym)
     }
     else {
-      alert(synonym + " is not a synonym! Please enter a word which is a synonym to " + this.wordSelected)
+      this.openSnackBar(synonym + ' is not a synonym! Please enter a word which is a synonym to ' + this.wordSelected, 'Close');
     }
   }
 
@@ -172,6 +173,7 @@ export class CreateWordComponent implements OnInit {
   }
 
   addSynonyms() {
+    this.synonymAddForm.reset();
     if (this.existingSynonymGroup !== -1 || this.existingDefinition !== this.selectedDefinition) {
       this.selectedSynonyms.forEach((selectedSynonym: any) => {
         this.wordAddRequest.push( {
@@ -210,9 +212,11 @@ export class CreateWordComponent implements OnInit {
         this.wordAddResponseData = data;
       },
       (err) => {
+        this.openSnackBar('Something went wrong!', 'Close');
         console.error(JSON.stringify(err));
       },
       () => {
+        this.openSnackBar('Synonyms added successfully!', 'Close');
       }
     );
   }
@@ -239,7 +243,14 @@ export class CreateWordComponent implements OnInit {
       this.onCancelModal();
     });
   }
-  
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      panelClass: 'snackbar',
+    });
+  }
+
   noWhitespaceValidator(control: FormControl) {
     const isWhitespace = (control.value || '').trim().length === 0;
     const isValid = !isWhitespace;

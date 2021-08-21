@@ -1,18 +1,33 @@
-.buttonToggleGroup {
-    border: none;
+.container{
+    text-align: center;
+    width: 50%;
     margin: auto;
-    display: block;
 }
 
 .matCardContainer {
-    margin: auto;
-    background-image: url("https://i.pinimg.com/originals/d0/67/5e/d0675e75e10ac79ff8af6245eb4d804b.jpg");
-    width: 50%;
-    top: 10%;
-    display: block;
 }
 
 .toolbar {
-    background-image: url("https://i.pinimg.com/originals/d0/67/5e/d0675e75e10ac79ff8af6245eb4d804b.jpg");
+    background-color: white;
+    border-bottom: solid;
+    border-bottom-color: rgb(103,116,190);
+}
+
+.navigateButtons {
+    margin-top: 5%;
+    border-color: rgb(103,116,190) !important;
+    background: rgb(219, 219, 219) !important;
     
+}
+mat-button-toggle {
+    background: rgb(219, 219, 219) !important;
+    color: rgb(103,116,190);
+}
+mat-button-toggle:hover {
+    background-color: rgb(103,116,190) !important;
+    color: white;
+}
+.mat-button-toggle-checked {
+    background-color: rgb(103,116,190) !important;
+    color: white;
 }

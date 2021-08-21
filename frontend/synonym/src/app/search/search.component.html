@@ -1,32 +1,36 @@
-<span>Enter a word to find its synonyms: </span>
-<form (ngSubmit)="getSynonyms(wordSearchForm.value);" [formGroup]="wordSearchForm">
-    <mat-form-field style="display: block;">
-    <input style="background: transparent;" matInput placeholder="Word" formControlName="wordString">
-    </mat-form-field>
-    <button type="submit">Search</button>
-</form>
-<div *ngFor="let group of wordsGrouped;">
-<ng-template [ngIf]="!isWordEmpty(group)">
-    <mat-card class="matCardContainer">
-    <div *ngFor="let word of group">
-        <mat-card-header>
-        <ng-template [ngIf]="word.word == selectedWord">
-            <h2>{{word.word}}</h2>
-            <p>{{word.description}}</p>
+<mat-card class="searchContainer">
+    <div>
+        <h4>Enter a word to find its synonyms: </h4>
+        <form (ngSubmit)="getSynonyms(wordSearchForm.value);" [formGroup]="wordSearchForm">
+            <mat-form-field style="display: block;">
+            <input style="background: transparent;" matInput placeholder="Word" formControlName="wordString">
+            </mat-form-field>
+            <button mat-button type="submit">Search</button>
+        </form>
+        <div *ngFor="let group of wordsGrouped;">
+        <ng-template [ngIf]="!isWordEmpty(group)">
+            <mat-card class="matCardContainer">
+            <div *ngFor="let word of group">
+                <mat-card-header>
+                <ng-template [ngIf]="word.word == selectedWord">
+                    <h2>{{word.word}}</h2>
+                    <p>{{word.description}}</p>
+                </ng-template>
+                </mat-card-header>
+                <mat-card-content>
+                <ng-template [ngIf]="word.word !== selectedWord">
+                    <p>
+                    {{word.word}}
+                    </p>
+                </ng-template>
+                </mat-card-content>
+            </div>
+            <mat-card-actions>
+                <button mat-button>Add</button>
+            </mat-card-actions>
+            </mat-card>
         </ng-template>
-        </mat-card-header>
-        <mat-card-content>
-        <ng-template [ngIf]="word.word !== selectedWord">
-            <p>
-            {{word.word}}
-            </p>
-        </ng-template>
-        </mat-card-content>
+        <br>
+        </div>
     </div>
-    <mat-card-actions>
-        <button mat-button>Add</button>
-    </mat-card-actions>
-    </mat-card>
-</ng-template>
-<br>
-</div>
+</mat-card>

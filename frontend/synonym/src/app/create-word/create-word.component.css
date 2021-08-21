@@ -1,0 +1,13 @@
+.addRemoveSynonymButtons {
+    background-color: rgb(103,116,190); 
+    border-radius: 30%;
+    size: 30%;
+    font-size:80% !important;
+    margin-left:1.5%;
+    margin-top: 1.5%;
+    color: white !important;
+}
+
+.addSynonymsContainer {
+    margin-top: 5%;
+}
