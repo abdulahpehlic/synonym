@@ -22,14 +22,19 @@ export class WordService {
     )
   }
 
+  fetchWordsByDescription(description: String) {
+    return this.http.get<WordResponse[]>(this.url + "check/" + description).pipe(
+      catchError(this.handleError)
+    )
+  }
+
   fetchThesaurusResponse(word: String) {
-    return this.http.get<WordRequest>(this.thesaurusUri + word).pipe(
+    return this.http.get<any>(this.thesaurusUri + word).pipe(
       catchError(this.handleError)
     );
   }
-  addWords(request: WordRequest[], mainWord: WordRequest) {
-
-    return this.http.post<WordRequest>(this.url + 'add', request).pipe(
+  addWords(request: any[]) {
+    return this.http.post<any[]>(this.url + 'add', request).pipe(
       catchError(this.handleError)
     );
   }

@@ -1,13 +1,24 @@
 
 <ng-template #addSynonymsModal>
-  <form (ngSubmit)="addSynonyms(synonymAddForm.value)" [formGroup]="synonymAddForm">
+  <form (ngSubmit)="addSynonyms(); onCancelModal()" [formGroup]="synonymAddForm">
     <mat-form-field style="display: block;">
       <input matInput placeholder="Synonym" formControlName="wordString" >
       <button *ngIf="synonymAddForm.valid" matSuffix mat-icon-button aria-label="Clear" (click)="addSynonymUsingInput(synonymAddForm.value.wordString)">
         <mat-icon>add</mat-icon>
       </button>
     </mat-form-field>
+    
     <mat-label style="font-size: 80%;">Synonyms you pick are listed here:</mat-label>
+    <div *ngIf="isThereExistingSynonyms">
+      <mat-label style="font-size: 70%;">*There are existing synonyms in the database! 
+        Synonyms you are adding belong to the same group and hence will be added as synonyms to the 
+        existing words. The existing words are presented below, before the synonyms you pick.</mat-label>
+      <br>
+      <br>
+      <button style="background-color: rgb(201, 201, 201); border-radius: 20%;" mat-button *ngFor="let synonym of existingSynonyms" disabled>
+        {{synonym}}
+      </button>
+    </div>
     <br>
     <br>
     <button style="background-color: rgb(201, 201, 201); border-radius: 20%;" mat-button *ngFor="let synonym of selectedSynonyms" (click)="handleSynonymSuggestionRemove(synonym);">

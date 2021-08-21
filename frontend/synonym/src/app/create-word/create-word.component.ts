@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { WordRequest } from '../core/word/model/word-request';
+import { WordResponse } from '../core/word/model/word-response';
 import { WordService } from '../core/word/service/word-service';
 
 @Component({
@@ -10,7 +12,7 @@ import { WordService } from '../core/word/service/word-service';
 })
 export class CreateWordComponent implements OnInit {
 
-  selectedSynonyms: String[] = [];
+  selectedSynonyms: string[] = [];
   possibleDescriptions: any[] = [];
   possibleSynonyms : any[] = [];
   suggestedSynonyms: any[] = [];
@@ -18,9 +20,15 @@ export class CreateWordComponent implements OnInit {
   wordAddForm: FormGroup;
   synonymAddForm: FormGroup;
   isWordSubmitted: boolean = false;
-  wordSelected: String;
+  wordSelected: string;
   jsonDataThesaurus: any[] = [];
-  selectedDefinition: String;
+  selectedDefinition: string;
+  existingSynonyms: string[] = [];
+  isThereExistingSynonyms: boolean = false;
+  wordAddRequest: any[] = [];
+  existingSynonymGroup: number = -1;
+  existingDefinition: string;
+  wordAddResponseData: any;
 
   constructor(private wordService: WordService, private dialog: MatDialog) { }
 
@@ -34,7 +42,7 @@ export class CreateWordComponent implements OnInit {
     })
     
     this.synonymAddForm = new FormGroup({
-      wordString: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(30), this.noWhitespaceValidator])
+      wordString: new FormControl('', [Validators.maxLength(30)])
     })
   }
 
@@ -59,7 +67,7 @@ export class CreateWordComponent implements OnInit {
     );
   }
 
-  handleSynonymSuggestionPick(synonym: String) {
+  handleSynonymSuggestionPick(synonym: string) {
     this.selectedSynonyms.push(synonym);
     this.suggestedSynonyms.forEach((element,index)=>{
       if(element === synonym) {
@@ -69,9 +77,13 @@ export class CreateWordComponent implements OnInit {
     this.synonymAddForm.reset();
   }
 
-  addSynonymUsingInput(synonym: String) {
+  addSynonymUsingInput(synonym: string) {
     if (this.selectedSynonyms.indexOf(synonym) !== -1) {
       alert("Synonym already picked!")
+      return;
+    }
+    if (this.existingSynonyms.indexOf(synonym) !== -1) {
+      alert("Synonym already exists in the database!")
       return;
     }
     if (this.possibleSynonyms.indexOf(synonym) !== -1) {
@@ -86,7 +98,7 @@ export class CreateWordComponent implements OnInit {
     }
   }
 
-  handleSynonymSuggestionRemove(synonym: String) {
+  handleSynonymSuggestionRemove(synonym: string) {
     this.synonymAddForm.reset();
     let hasSynonymMaxSimilarity;
     this.synonymObjectArray.forEach((element)=>{
@@ -106,7 +118,8 @@ export class CreateWordComponent implements OnInit {
     });
   }
 
-  getPotentialSynonyms(description: String) {
+  getPotentialSynonyms(description: string) {
+    this.getExistingSynonyms(description);
     this.selectedDefinition = description;
     this.jsonDataThesaurus.forEach((definition: any) => {
       if (definition.definition === description) {
@@ -121,14 +134,96 @@ export class CreateWordComponent implements OnInit {
     });
   }
 
-  addSynonyms(wordAddFormValue: any) {
+  getExistingSynonyms(description: string) {
+    this.wordService.fetchWordsByDescription(description).subscribe(
+      (data: WordResponse[]) => {
+        if (data.length !== 0) {
+          this.existingDefinition = data[0].description;
+          this.existingSynonymGroup = data[0].synonymGroup;
+          data.forEach((synonymObject: any) => {
+            this.existingSynonyms.push(synonymObject.word);
+          });
+          this.existingSynonyms.splice(this.existingSynonyms.indexOf(this.wordSelected), 1)
+          this.isThereExistingSynonyms = true;
+          this.existingSynonyms.forEach((existingSynonym: any) => {
+            this.suggestedSynonyms.forEach((suggestedSynonym: any, index) => {
+              if (suggestedSynonym === existingSynonym) {
+                this.suggestedSynonyms.splice(index, 1);
+              }
+            });
+            this.possibleSynonyms.forEach((possibleSynonym: any, index) => {
+              if (possibleSynonym === existingSynonym) {
+                this.possibleSynonyms.splice(index, 1);
+              }
+            });
+          });
+        }
+        else {
+          this.isThereExistingSynonyms = false;
+        }
+      },
+      (err) => {
+        console.error(JSON.stringify(err));
+      },
+      () => {
+        
+      }
+    );
+  }
 
+  addSynonyms() {
+    if (this.existingSynonymGroup !== -1 || this.existingDefinition !== this.selectedDefinition) {
+      this.selectedSynonyms.forEach((selectedSynonym: any) => {
+        this.wordAddRequest.push( {
+          word: selectedSynonym,
+          description: this.selectedDefinition,
+          synonymGroup: this.existingSynonymGroup
+        })
+      });
+      if (this.existingSynonyms.indexOf(this.wordSelected) !== -1 || this.existingDefinition !== this.selectedDefinition) {
+        const pivotWord = {
+          word: this.wordSelected,
+          description: this.selectedDefinition,
+          synonymGroup: this.existingSynonymGroup
+        }
+        this.wordAddRequest.push(pivotWord);
+      }
+    }
+    else {
+      this.selectedSynonyms.forEach((selectedSynonym: any) => {
+        this.wordAddRequest.push({
+          word: selectedSynonym,
+          description: this.selectedDefinition
+        })
+      });
+      if (this.existingSynonyms.indexOf(this.wordSelected) !== -1) {
+        const pivotWord : WordRequest = {
+          word: this.wordSelected,
+          description: this.selectedDefinition
+        }
+        this.wordAddRequest.push(pivotWord);
+      }
+    }
+    
+    this.wordService.addWords(this.wordAddRequest).subscribe(
+      (data: any) => {
+        this.wordAddResponseData = data;
+      },
+      (err) => {
+        console.error(JSON.stringify(err));
+      },
+      () => {
+      }
+    );
   }
 
   onCancelModal(){
     this.selectedSynonyms = [];
     this.possibleSynonyms = [];
     this.suggestedSynonyms = [];
+    this.existingSynonyms = [];
+    this.wordAddRequest = [];
+    this.existingSynonymGroup = -1;
     this.dialog.closeAll();
     this.synonymAddForm.reset();
   }
@@ -141,6 +236,7 @@ export class CreateWordComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.synonymAddForm.reset();
+      this.onCancelModal();
     });
   }
   
