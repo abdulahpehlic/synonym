@@ -12,6 +12,8 @@ public interface WordService {
 	
 	List<Word> getWordsByWordString(String word);
 	
+	List<Word> getWordsByDescription(String description);
+	
 	Long getLatestSynonymGroup();
 	
 	Word checkForExistingSynonyms(List<String> listOfSynonyms);

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class SynonymApplication {
 
+	//Model mapper registered as a bean and autowired in the controller to map entities to/from DTOs
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
