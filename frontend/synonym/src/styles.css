@@ -4,7 +4,7 @@ html, body { height: 100%; }
 body {margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color:rgb(219, 219, 219) ;}
 
 .mat-card {
-    color: rgb(103,116,190) !important;
+    color: rgb(28,137,189) !important;
     border-radius: 5% !important;
 }
 .mat-button-disabled {

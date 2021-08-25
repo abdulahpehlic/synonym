@@ -46,13 +46,15 @@
 </ng-template>
 
 <mat-card class="addSynonymsContainer" *ngIf="!isWordSubmitted">
-  <h4>Please enter a word for which you want to add synonyms</h4>
-  <form (ngSubmit)="getPossibleDescriptions(wordAddForm.value);" [formGroup]="wordAddForm">
-      <mat-form-field style="display: block;">
-        <input style="background: transparent;" matInput placeholder="Word" formControlName="wordString">
-      </mat-form-field>
-      <button mat-button type="submit" [disabled]="!wordAddForm.valid">Submit</button>
-  </form>
+  <div>
+    <h4>Please enter a word for which you want to add synonyms</h4>
+    <form (ngSubmit)="getPossibleDescriptions(wordAddForm.value);" [formGroup]="wordAddForm">
+        <mat-form-field style="display: block;">
+          <input style="background: transparent;" matInput placeholder="Word" formControlName="wordString">
+        </mat-form-field>
+        <button mat-button type="submit" [disabled]="!wordAddForm.valid">Submit</button>
+    </form>
+  </div>
 </mat-card>
 
 <mat-card class="addSynonymsContainer" *ngIf="isWordSubmitted">

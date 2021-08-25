@@ -4,13 +4,8 @@
     margin: auto;
 }
 
-.matCardContainer {
-}
-
 .toolbar {
     background-color: white;
-    border-bottom: solid;
-    border-bottom-color: rgb(103,116,190);
 }
 
 .navigateButtons {
@@ -22,16 +17,20 @@
 
 mat-button-toggle {
     background: white !important;
-    color: rgb(103,116,190) !important;
+    color: rgb(28,137,189) !important;
 }
 mat-button-toggle:hover {
-    background-color: rgb(103,116,190) !important;
+    background-color: rgb(28,137,189) !important;
     color: white !important;
 }
 .mat-button-toggle-checked {
-    background-color: rgb(103,116,190) !important;
+    background-color: rgb(28,137,189) !important;
     color: white !important;
 }
+
+::ng-deep.mat-form-field-underline {
+    background-color: rgb(28,137,189) !important;
+  } 
 
 @media only screen and (max-width: 550px) {
     mat-button-toggle {
