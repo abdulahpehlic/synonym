@@ -45,7 +45,7 @@
   <button type='button' (click)="onCancelModal()" mat-button style="float:right; border-radius: 5px;">Cancel</button>
 </ng-template>
 
-<mat-card class="addSynonymsContainer">
+<mat-card class="addSynonymsContainer" *ngIf="!isWordSubmitted">
   <h4>Please enter a word for which you want to add synonyms</h4>
   <form (ngSubmit)="getPossibleDescriptions(wordAddForm.value);" [formGroup]="wordAddForm">
       <mat-form-field style="display: block;">
@@ -53,18 +53,21 @@
       </mat-form-field>
       <button mat-button type="submit" [disabled]="!wordAddForm.valid">Submit</button>
   </form>
-  <div *ngIf="isWordSubmitted">
+</mat-card>
+
+<mat-card class="addSynonymsContainer" *ngIf="isWordSubmitted">
+    <h4> Please choose the description that best fits your word: ({{wordSelected}})</h4>
     <br>
     <mat-divider></mat-divider>
-    <br>
-    <h4> Please choose the description that best fits your word:</h4>
-    <br>
-    <mat-divider></mat-divider>
-    <br>
-    <button mat-button *ngFor="let description of possibleDescriptions" (click)="getPotentialSynonyms(description); openModal(addSynonymsModal);">
+    <button class="descriptionButton" mat-button *ngFor="let description of possibleDescriptions" (click)="getPotentialSynonyms(description); openModal(addSynonymsModal);">
       {{description}}
       <br>
     </button>
-  </div>
-  
+    <mat-divider style="margin-top:2%"></mat-divider>
+    <br>
+    <br>
+    <br>
+    <button style="margin-left: 2%;" mat-button (click)="isWordSubmitted = false; synonymAddForm.reset()">
+      Cancel
+    </button>
 </mat-card>

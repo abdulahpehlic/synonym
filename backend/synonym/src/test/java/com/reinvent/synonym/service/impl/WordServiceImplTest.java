@@ -29,7 +29,7 @@ class WordServiceImplTest {
     }
 	
 	@Test
-	void checkForExistingSynonymsTest() {
+	void testCheckForExistingSynonyms() {
 		//Given
 		Word testWord = new Word();
 		testWord.setId(1L);

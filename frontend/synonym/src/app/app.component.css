@@ -15,19 +15,37 @@
 
 .navigateButtons {
     margin-top: 5%;
-    border-color: rgb(103,116,190) !important;
+    border: none;
     background: rgb(219, 219, 219) !important;
     
 }
+
 mat-button-toggle {
-    background: rgb(219, 219, 219) !important;
-    color: rgb(103,116,190);
+    background: white !important;
+    color: rgb(103,116,190) !important;
 }
 mat-button-toggle:hover {
     background-color: rgb(103,116,190) !important;
-    color: white;
+    color: white !important;
 }
 .mat-button-toggle-checked {
     background-color: rgb(103,116,190) !important;
-    color: white;
+    color: white !important;
+}
+
+@media only screen and (max-width: 550px) {
+    mat-button-toggle {
+        width: 100px;
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 430px) {
+    mat-button-toggle {
+        width: 80px;
+        white-space: initial;
+    }
+    ::ng-deep .mat-button-toggle-label-content {
+        line-height: 22px !important;
+    }
 }

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MediaObserver, MediaChange } from '@angular/flex-layout'
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +11,15 @@ import { Router } from '@angular/router';
 export class AppComponent {
   
   title = 'synonym';
-  constructor (private router: Router) {}
-
-  ngOnInit() {
-  }
+  mediaSub: Subscription;
+  deviceSm: boolean;
+  constructor (private router: Router, public mediaObserver: MediaObserver) {}
 
   navigate(url: string){
     this.router.navigateByUrl(url);
+  }
+
+  currentRoute() {
+    return this.router.url;
   }
 }

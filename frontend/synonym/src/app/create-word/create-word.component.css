@@ -11,3 +11,15 @@
 .addSynonymsContainer {
     margin-top: 5%;
 }
+
+mat-button {
+    border-color: rgb(103,116,190) !important;
+}
+
+.descriptionButton {
+    border: 1px solid rgb(103,116,190) !important;
+    border-radius: 20px;
+    white-space: initial;
+    margin-top: 2%;
+    margin-left: 2%;
+}
