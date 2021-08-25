@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { SearchComponent } from './search/search.component';
 import { CreateWordComponent } from './create-word/create-word.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
-    FlexLayoutModule
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
